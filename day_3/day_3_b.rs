@@ -1,15 +1,10 @@
+
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 
 const INPUT_NAME: &str = "input_3.txt";
-const MOVEMENT_VECTORS: [(usize, usize); 5] = [
-    (1, 1),
-    (1, 3),
-    (1, 5),
-    (1, 7),
-    (2, 1),
-];
+const MOVEMENT_VEC: (usize, usize) = (1, 3);
 
 fn read_input_file() -> String {
     let path = Path::new(INPUT_NAME);
@@ -47,20 +42,16 @@ fn main() {
         }
     }
 
-    let mut tree_product: i64 = 1;
-    for movement_vec in &MOVEMENT_VECTORS {
-        let mut tree_count: i64 = 0;
-        let mut position: [usize; 2] = [0, 0];
-        while position[0] < vertical_dim {
-            if top_map[position[0] * horizontal_dim + (position[1] % horizontal_dim)] == b'#' {
-                tree_count += 1;
-            }
-
-            position[0] += movement_vec.0;
-            position[1] += movement_vec.1;
+    let mut tree_count: i64 = 0;
+    let mut position: [usize; 2] = [0, 0];
+    while position[0] < vertical_dim {
+        if top_map[position[0] * horizontal_dim + (position[1] % horizontal_dim)] == b'#' {
+            tree_count += 1;
         }
-        tree_product *= tree_count;
+
+        position[0] += MOVEMENT_VEC.0;
+        position[1] += MOVEMENT_VEC.1;
     }
 
-    println!("{}", tree_product);
+    println!("{}", tree_count);
 }
